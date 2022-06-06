@@ -1,14 +1,18 @@
 
 
 
+import checkoutElements from '../pageObject/checkoutElements'
+
+
+
+const checkoutElement = new checkoutElements()
+
+
   it('checkCheckoutValidationName', () => {
     // https://on.cypress.io/type
    
 
-        cy.visit('https://www.saucedemo.com/')
-        cy.get('[data-test="username"]').type('standard_user')
-        cy.get('[data-test="password"]').type('secret_sauce')
-        cy.get('[data-test="login-button"').click()
+      cy.loginAuth('standard_user', 'secret_sauce')
 
         cy.url('https://www.saucedemo.com/inventory.html').should('contain', '/inventory')
         cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').click()
@@ -37,23 +41,14 @@
         
 
 
-        cy.get('[data-test="firstName"]').type('firstName')
-        cy.get('[data-test="lastName"]').type('lastName')
-        cy.get('[data-test="postalCode"]').type('12345')
+        checkoutElement.firstNameInput().type('firstName')
+        checkoutElement.secondNameInput().type('lastName')
+        checkoutElement.zipCodeInput().type('12345')
 
 
         cy.get('[data-test="continue"]').click()
         
         cy.url().should('contain', '/checkout-step-two.html')
-
-
-        cy.get('.summary_info > :nth-child(4)').then(shippingInformation => {
-            if(shippingInformation.text().includes('FREE PONY EXPRESS DELIVERY!')){
-                cy.log('ok text exist')
-            }else {
-                throw new Error('shipping FREE PONY EXPRESS DELIVERY! text not exist')
-            }
-        })
 
      
 
